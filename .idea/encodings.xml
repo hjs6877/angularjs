@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/WebContent/framework/angular-mocks.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/WebContent/framework/angular.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angularjsTest/web/app.html" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angularjsTest/web/bootstrap" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angularjsTest/web/framework" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angularjsTest/web/js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angularjsTest/web/karma.config.js" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/../angularjsTest/web/test" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

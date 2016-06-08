@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Qunittest/Qunittest.iml" filepath="$PROJECT_DIR$/Qunittest/Qunittest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/angularJsTest/angularJsTest.iml" filepath="$PROJECT_DIR$/angularJsTest/angularJsTest.iml" />
       <module fileurl="file://$PROJECT_DIR$/angularjs.iml" filepath="$PROJECT_DIR$/angularjs.iml" />
     </modules>
   </component>

@@ -6,17 +6,20 @@
     <link href="./bootstrap/css/bootstrap.css" rel="stylesheet"/>
     <link href="./bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
     <script src="./framework/angular.js"></script>
+    <script src="./controllers.js"></script>
+    <script src="./filters.js"></script>
     <script>
-        var myApp = angular.module("exampleApp", []);
-
-        myApp.controller("dayCtrl", function($scope, days){
-            $scope.day = days.today;
-        })
-        .controller("tomorrowCtrl", function($scope, days){
-            $scope.day = days.tomorrow;
+        var myApp = angular.module("exampleApp",
+                ["exampleApp.Controllers", "exampleApp.Filters", "exampleApp.Directives", "exampleApp.Services"]);
+        myApp.constant("startTime", new Date().toLocaleTimeString());
+        myApp.config(function(startTime){
+            console.log("Main module config: " + startTime);
+        });
+        myApp.run(function(startTime){
+           console.log("Main module run: " + startTime);
         });
 
-        myApp.directive("highlight", function($filter){
+        angular.module("exampleApp.Directives", []).directive("highlight", function($filter){
             var dayFilter = $filter("dayName");
 
             return function(scope, element, attrs){
@@ -26,20 +29,19 @@
             }
         });
 
-        myApp.filter("dayName", function(){
-            var dayNames = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-            return function(input){
-                return angular.isNumber(input) ? dayNames[input] : input;
-            }
-        });
-
         var now = new Date();
         myApp.value("nowValue", now);
 
-        myApp.service("days", function(nowValue){
-           this.today = nowValue.getDay();
+        angular.module("exampleApp.Services", []).service("days", function(nowValue){
+            this.today = nowValue.getDay();
             this.tomorrow = this.today + 1;
-        });
+        })
+        .config(function(){
+            console.log("Services module config: (no time)");
+        })
+        .run(function(startTime){
+            console.log("Services module run: " + startTime);
+        })
     </script>
 </head>
 <body>

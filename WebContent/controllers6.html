@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Controllers</title>
+    <link href="./bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="./bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/sunny/jquery-ui.min.css" rel="stylesheet"/>
+    <script src="./framework/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script>
+
+        var app = angular.module("exampleApp", [])
+                .controller("mainController", function($scope){
+                    $scope.broadcast = function(broadCastMsg){
+                        $scope.$broadcast("broadCastMsg", broadCastMsg);
+                        $scope.broadCastMsg = "";
+                    };
+
+                    $scope.$on("emitMsgToMainController", function(e, emitMsg){
+                        alert("child1 자식 스코프에서 루트 스코프로 emit된 메시지: " + emitMsg);
+                    });
+
+                    $scope.$on("emitMsgToChild2ControllerViaMainController", function(e, emitMsg){
+                        alert("child1에서 emit 되어 child2로 broadcast!!");
+                        $scope.$broadcast("broadCastMsgToChild2Controller", emitMsg);
+                    });
+                })
+                .controller("child1Controller", function($scope){
+                    $scope.$on("broadCastMsg", function(e, broadCastMsg){
+                        alert("루트 스코프에서 child1에 브로드 캐스팅 된 메시지: " + broadCastMsg);
+                    });
+
+                    $scope.emit = function(emitMsgToMainController){
+                        $scope.$emit("emitMsgToMainController", emitMsgToMainController);
+                        $scope.emitMsgToMainController = "";
+                    }
+
+                    $scope.emitToChild2 = function(emitMsgToChild2ControllerViaMainController){
+                        $scope.$emit("emitMsgToChild2ControllerViaMainController", emitMsgToChild2ControllerViaMainController);
+                        $scope.emitMsgToChild2ControllerViaMainController = "";
+                    }
+
+                })
+                .controller("child2Controller", function($scope){
+                    $scope.$on("broadCastMsg", function(e, broadCastMsg){
+                        alert("루트 스코프에서 child2에 브로드 캐스팅 된 메시지: " + broadCastMsg);
+                    });
+
+                    $scope.$on("broadCastMsgToChild2Controller", function(e, broadcastMsg){
+                        alert("child2에서 루트 스코프를 거쳐 broadcast 된 메시지: " + broadcastMsg);
+                    });
+                });
+    </script>
+</head>
+<body ng-controller="mainController">
+    <div class="well">
+        <h4>스코프 간의 이벤트 처리 예시</h4>
+        <ul>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+    <input type="text" ng-model="broadCastMsg"/>
+    <input type="button" value="자식 scope들에게 브로드 캐스팅" ng-click="broadcast(broadCastMsg)"/>
+    <div ng-controller="child1Controller" style="margin-top: 10px;">
+        <input type="text" ng-model="emitMsgToMainController"/>
+        <input type="button" value="부모 scope들에게 emit" ng-click="emit(emitMsgToMainController)"/><br/><br/>
+        <input type="text" ng-model="emitMsgToChild2ControllerViaMainController"/>
+        <input type="button" value="부모 scope에게 emit을 통해 child2Controller에게 전송" ng-click="emitToChild2(emitMsgToChild2ControllerViaMainController)"/>
+    </div>
+    <div ng-controller="child2Controller">
+
+    </div>
+</body>
+</html>

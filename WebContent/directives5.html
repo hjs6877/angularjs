@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Directives</title>
+    <link href="./bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="./bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
+    <script src="./framework/angular.js"></script>
+
+    <script>
+        angular.module("exampleApp", [])
+                .controller("defaultCtrl", function($scope){
+                    $scope.products = [
+                        {name: "Apples", category: "Fruit", price: 1.20, expiry: 10},
+                        {name: "Bananas", category: "Fruit", price: 2.42, expiry: 7},
+                        {name: "Pears", category: "Fruit", price: 2.02, expiry: 6}
+                    ];
+                })
+                .directive("unorderedList", function(){
+                    return {
+                        link: function(scope, element, attrs){
+                            var data = scope[attrs["unorderedList"]];
+                            var propertyExpression = attrs["listProperty"];
+                            if(angular.isArray(data)){
+                                var listElement = angular.element("<ul>");
+                                element.append(listElement);
+                                for(var i=0; i < data.length; i++){
+                                    var itemElement = angular.element("<li>")
+                                            .text(scope.$eval(propertyExpression, data[i]));
+                                    listElement.append(itemElement);
+                                }
+                            }
+                        },
+                        restrict: "EACM"
+                    };
+
+                });
+    </script>
+
+</head>
+<body ng-controller="defaultCtrl">
+    <div class="well">
+        <h4>팩터리함수에서 디렉티브 정의 객체 반환</h4>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>Products</h3>
+        </div>
+        <div class="panel-body">
+            <div unordered-list="products" list-property="price | currency"></div>
+        </div>
+    </div>
+</body>
+</html>

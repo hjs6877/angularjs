@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="exampleApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Forms</title>
+    <link href="./bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="./bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
+    <script src="./framework/angular.js"></script>
+    <script>
+        angular.module("exampleApp", [])
+                .controller("defaultCtrl", function($scope){
+                    $scope.todos = [
+                        {id: 100, place: "Store", action: "과일 사기", complete: false},
+                        {id: 200, place: "Home", action: "아침 먹기", complete: false},
+                        {id: 300, place: "Store", action: "책상 조립하기", complete: true}
+                    ];
+                });
+    </script>
+    <style>
+
+    </style>
+</head>
+<body>
+    <div id="todoPanel" class="panel" ng-controller="defaultCtrl">
+        <form name="myForm" novalidate>
+            <div class="well">
+                <div class="form-group">
+                    <label>
+                        Select an Action
+                    </label>
+                    <select ng-model="selectValue"
+                            ng-options="item.id as item.action group by item.place for item in todos">
+
+                    </select>
+                </div>
+            </div>
+            <div class="well">
+                <p>Selected: {{selectValue || 'None'}}</p>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

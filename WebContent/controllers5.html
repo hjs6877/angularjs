@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html ng-app="exampleApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Controllers</title>
+    <link href="./bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="./bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
+    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/themes/sunny/jquery-ui.min.css" rel="stylesheet"/>
+    <script src="./framework/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+    <script>
+        $(document).ready(function(){
+           $('#jqui button').button().click(function(e){
+               angular.element(angularRegion).scope().$apply('handleClick()');
+           });
+        });
+
+        var app = angular.module("exampleApp", [])
+                .controller("simpleCtrl", function($scope){
+                    $scope.buttonEnabled = true;
+                    $scope.clickCounter = 0;
+
+                    $scope.handleClick = function(){
+                        $scope.clickCounter++;
+                    };
+
+                    $scope.$watch('buttonEnabled', function(newValue){
+                        $("#jqui button").button({
+                            disabled: !newValue
+                        });
+                    });
+                });
+    </script>
+</head>
+<body>
+    <div class="well">
+        <h4>다른 프레임워크를 통한 스코프 업데이트 예시</h4>
+        <ul>
+            <li>$watch(): AngularJS 영역내의 스코프의 상태를 모니터링하다가 변화가 있을 경우, 외부 프레임워크등의 동작을 변경할 수 있다.</li>
+            <li>$apply(): AngularJS 영역 밖에서 다른 프레임워크에 변경이 발생할 경우, AngularJS에서 특정 변화를 일으키도록 내부 연동을 위한 기능을 제공한다.</li>
+        </ul>
+    </div>
+    <div id="angularRegion" class="well" ng-controller="simpleCtrl">
+        <h4>AngularJS</h4>
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" ng-model="buttonEnabled"> Enable Button
+            </label>
+        </div>
+        Click counter: {{clickCounter}}
+    </div>
+    <div id="jqui" class="well">
+        <h4>jQeury UI</h4>
+        <button>Click Me!</button>
+    </div>
+</body>
+</html>

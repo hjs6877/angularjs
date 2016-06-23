@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="exampleApp">
+<head>
+    <meta charset="UTF-8">
+    <title>Filters</title>
+    <link href="./bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="./bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
+    <script src="./framework/angular.js"></script>
+    <script>
+        angular.module("exampleApp", [])
+                .controller("defaultCtrl", function($scope){
+                    $scope.products = [
+                        {name: "Apples", category: "Fruit", price: 1.20, expiry: 10},
+                        {name: "Bananas", category: "Fruit", price: 2.42, expiry: 7},
+                        {name: "Pears", category: "Fruit", price: 2.02, expiry: 6},
+
+                        {name: "Tuna", category: "Fish", price: 20.45, expiry: 3},
+                        {name: "Salmon", category: "Fish", price: 17.93, expiry: 2},
+                        {name: "Trout", category: "Fish", price: 12.93, expiry: 4},
+
+                        {name: "Beer", category: "Drinks", price: 2.99, expiry: 365},
+                        {name: "Wine", category: "Drinks", price: 8.99, expiry: 365},
+                        {name: "Whiskey", category: "Drinks", price: 45.99, expiry: 365}
+                    ];
+
+                    $scope.sortCustom = function(item){
+                        return item.expiry < 5 ? 0 : item.price;
+                    };
+                });
+    </script>
+    <script src="customFilter.js"></script>
+</head>
+<body ng-controller="defaultCtrl">
+    <div class="well">
+        <h4>커스텀 필터 예시</h4>
+    </div>
+    <div class="panel-heading">
+        <h3>
+            Products
+            <span class="label label-primary">{{products.length}}</span>
+        </h3>
+    </div>
+    <div class="panel-body">
+        Limit:
+        <select ng-model="limitVal" ng-options="item for item in limitRange">
+
+        </select>
+    </div>
+    <div class="panel-body">
+        <div>
+            - 첫글자를 대/소문자로 변환해주는 커스텀 필터 적용.
+        </div>
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+            <tr>
+                <td>Name</td>
+                <td>Category</td>
+                <td>Expiry</td>
+                <td class="text-right">Price</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="product in products">
+                <td>{{product.name | labelCase}}</td>
+                <td>{{product.category | labelCase:true}}</td>
+                <td>{{product.expiry}}</td>
+                <td class="text-right">{{product.price | currency}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <p>&nbsp;</p>
+        <div>
+            - 컬렉션 데이터의 일부를 잘라내서 skip하는 커스텀 필터 적용.
+        </div>
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+            <tr>
+                <td>Name</td>
+                <td>Category</td>
+                <td>Expiry</td>
+                <td class="text-right">Price</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="product in products | skip:2 | limitTo: 5">
+                <td>{{product.name | labelCase}}</td>
+                <td>{{product.category | labelCase:true}}</td>
+                <td>{{product.expiry}}</td>
+                <td class="text-right">{{product.price | currency}}</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <p>&nbsp;</p>
+        <div>
+            - 커스텀 필터와 내장 필터를 결합한 커스텀 필터 사용 예
+        </div>
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+            <tr>
+                <td>Name</td>
+                <td>Category</td>
+                <td>Expiry</td>
+                <td class="text-right">Price</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="product in products | take:2:4">
+                <td>{{product.name | labelCase}}</td>
+                <td>{{product.category | labelCase:true}}</td>
+                <td>{{product.expiry}}</td>
+                <td class="text-right">{{product.price | currency}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
